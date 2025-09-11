@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Code Sender - Envío de Códigos{% endblock %}
+
+{% block content %}
+<h1>Code Sender</h1>
+<p style="text-align: center; color: #666; margin-bottom: 30px;">
+    Envía códigos únicos y anónimos a una lista de correos electrónicos
+</p>
+
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+
+<form method="POST">
+    <div class="form-group">
+        <label for="api_key">API Key de SendGrid:</label>
+        <input type="password" id="api_key" name="api_key" required 
+               placeholder="Ingresa tu API Key de SendGrid">
+        <small style="color: #666;">Tu API Key se usa solo para este envío y no se almacena.</small>
+    </div>
+    
+    <div class="form-group">
+        <label for="email_list">Lista de Correos Electrónicos:</label>
+        <textarea id="email_list" name="email_list" required 
+                  placeholder="Ingresa un email por línea:&#10;usuario1@ejemplo.com&#10;usuario2@ejemplo.com&#10;usuario3@ejemplo.com"></textarea>
+        <small style="color: #666;">Un email por línea. Se generará un código único para cada uno.</small>
+    </div>
+    
+    <button type="submit">Enviar Códigos</button>
+</form>
+{% endblock %}

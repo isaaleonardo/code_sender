@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Acerca de Code Sender{% endblock %}
+
+{% block content %}
+<h1>Acerca de Code Sender</h1>
+
+<div style="line-height: 1.6;">
+    <h2>¿Qué es Code Sender?</h2>
+    <p>Code Sender es una herramienta web diseñada para fortalecer la integridad y el anonimato en cualquier proceso de recolección de datos, como encuestas, votaciones o formularios de registro.</p>
+    
+    <h2>¿Qué problema soluciona?</h2>
+    <p>En muchos escenarios, es crucial asegurar dos cosas:</p>
+    <ol>
+        <li><strong>Anonimato del participante:</strong> Garantizar que las respuestas no puedan ser rastreadas hasta un individuo específico.</li>
+        <li><strong>Unicidad de la respuesta:</strong> Prevenir que una misma persona responda múltiples veces.</li>
+    </ol>
+    
+    <h2>¿Cómo funciona?</h2>
+    <p>Code Sender actúa como un intermediario ciego que:</p>
+    <ul>
+        <li>Genera códigos únicos y criptográficamente seguros</li>
+        <li>Envía cada código a un email específico</li>
+        <li><strong>No almacena</strong> la relación entre el email y el código</li>
+        <li>Garantiza que el administrador no pueda saber qué código pertenece a qué persona</li>
+    </ul>
+    
+    <h2>Características de Seguridad</h2>
+    <ul>
+        <li>API Key de SendGrid manejada de forma segura</li>
+        <li>Códigos generados con el módulo <code>secrets</code> de Python</li>
+        <li>Sin almacenamiento persistente de datos sensibles</li>
+        <li>Separación total entre identidad y código</li>
+    </ul>
+</div>
+
+<div style="text-align: center; margin-top: 30px;">
+    <a href="/" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+        Comenzar
+    </a>
+</div>
+{% endblock %}

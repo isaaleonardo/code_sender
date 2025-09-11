@@ -1,0 +1,77 @@
+from flask import Flask, render_template, request, redirect, url_for
+import secrets
+import string
+
+app = Flask(__name__)
+
+def generate_secure_code(length=8):
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for _ in range(length))
+
+def clean_email_list(email_text):
+  if not email_text:
+    return []
+  
+  # Dividir por líneas y limpiar espacios
+  emails = [email.strip() for email in email_text.split('\n')]
+  # Filtrar líneas vacías
+  emails = [email for email in emails if email]
+  return emails
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+  if request.method == "POST":
+    api_key = request.form.get("api_key")
+    email_list = request.form.get("email_list")
+    
+    if not api_key:
+      return render_template("index.html", error="La API Key es requerida")
+    
+    if not email_list:
+      return render_template("index.html", error="La lista de emails es requerida")
+    
+    emails = clean_email_list(email_list)
+    
+    if not emails:
+      return render_template("index.html", error="No se encontraron emails válidos")
+    
+    return redirect(url_for("enviar", 
+                            api_key=api_key, 
+                            emails=','.join(emails)))
+  
+  return render_template("index.html")
+
+@app.route("/enviar")
+def enviar():
+  api_key = request.args.get("api_key")
+  emails_str = request.args.get("emails")
+  
+  if not api_key or not emails_str:
+    return redirect(url_for("index"))
+  
+  # Convertir string de emails de vuelta a lista
+  emails = emails_str.split(',')
+  
+  codes = [generate_secure_code() for _ in emails]
+  
+  # Simular envío de emails (aquí es donde iría la integración con SendGrid)
+  sent_count = 0
+  errors = []
+  
+  for email, code in zip(emails, codes):
+      try:
+          # SIMULACIÓN: En la vida real aquí iría el código de SendGrid
+          print(f"Enviando código '{code}' a {email}")
+          # simulate_send_email(email, code, api_key)
+          sent_count += 1
+      except Exception as e:
+          errors.append(f"Error enviando a {email}: {str(e)}")
+  
+  return render_template("result.html", 
+                        sent_count=sent_count,
+                        total_emails=len(emails),
+                        errors=errors)
+
+@app.route("/about")
+def about():
+  return render_template("about.html")

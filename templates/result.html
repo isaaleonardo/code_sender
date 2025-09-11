@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Resultado del Envío - Code Sender{% endblock %}
+
+{% block content %}
+<h1>Resultado del Envío</h1>
+
+<div class="success">
+    <strong>¡Proceso completado!</strong><br>
+    Se enviaron {{ sent_count }} códigos de {{ total_emails }} emails totales.
+</div>
+
+{% if errors %}
+<div class="error">
+    <strong>Errores encontrados:</strong>
+    <ul>
+        {% for error in errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div style="margin-top: 30px;">
+    <p><strong>Importante:</strong></p>
+    <ul>
+        <li>Los códigos han sido enviados de forma anónima</li>
+        <li>No se ha almacenado la relación entre emails y códigos</li>
+        <li>Cada código es único y criptográficamente seguro</li>
+    </ul>
+</div>
+
+<div style="text-align: center; margin-top: 30px;">
+    <a href="/" style="background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+        Enviar Más Códigos
+    </a>
+</div>
+{% endblock %}
