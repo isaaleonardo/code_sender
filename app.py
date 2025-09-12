@@ -35,14 +35,14 @@ def index():
     if not emails:
       return render_template("index.html", error="No se encontraron emails válidos")
     
-    return redirect(url_for("enviar", 
+    return redirect(url_for("send", 
                             api_key=api_key, 
                             emails=','.join(emails)))
   
   return render_template("index.html")
 
 @app.route("/enviar")
-def enviar():
+def send():
   api_key = request.args.get("api_key")
   emails_str = request.args.get("emails")
   
@@ -72,6 +72,6 @@ def enviar():
                         total_emails=len(emails),
                         errors=errors)
 
-@app.route("/about")
+@app.route("/acerca-de")
 def about():
   return render_template("about.html")
