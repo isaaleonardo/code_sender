@@ -11,10 +11,11 @@
 <form method="POST">
     <div class="field">
         <label class="label">API Key de SendGrid</label>
-        <div class="control">
-            <input class="input" type="password" placeholder="Ingresa tu API Key de SendGrid">
-            <small style="color: #666;">Tu API Key se usa solo para este envío y no se almacena.</small>
+        <div class="control is-flex is-align-items-center">
+            <input class="input" type="password" id="api-key" placeholder="Ingresa tu API Key de SendGrid">
+            <button class="button is-small ml-2" id="toggle-password" type="button">🙉</button>
         </div>
+        <small style="color: #666; margin-left: 10px;">Tu API Key se usa solo para este envío y no se almacena.</small>
     </div>
 
     <div class="field">
@@ -31,10 +32,22 @@
 
 <script>
     const addEmailButton = document.getElementById('add-email');
+    const togglePasswordButton = document.getElementById('toggle-password');
+    const apiKeyInput = document.getElementById('api-key');
 
     addEmailButton.addEventListener('click', e => {
         e.preventDefault();
         addEmailField();
+    });
+
+    togglePasswordButton.addEventListener('click', () => {
+        if (apiKeyInput.type === 'password') {
+            apiKeyInput.type = 'text';
+            togglePasswordButton.textContent = '🙈';
+        } else {
+            apiKeyInput.type = 'password';
+            togglePasswordButton.textContent = '🙉';
+        }
     });
 
     function addEmailField() {
