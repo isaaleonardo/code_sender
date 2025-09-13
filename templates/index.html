@@ -20,7 +20,7 @@
     <div class="field">
         <label class="label">Lista de Correos Electrónicos:</label>
         <div class="control pb-4">
-            <input class="input" type="input" placeholder="usuario1@ejemplo.com">
+            <input class="input" type="input" placeholder="usuario@ejemplo.com">
         </div>
 
         <button class="button is-dark is-fullwidth" id="add-email">➕ Agregar otro correo</button>
@@ -31,20 +31,26 @@
 
 <script>
     const addEmailButton = document.getElementById('add-email');
-    
+
     addEmailButton.addEventListener('click', e => {
         e.preventDefault();
         addEmailField();
     });
-    
+
     function addEmailField() {
         const newDiv = document.createElement('div');
-        newDiv.className = 'control pb-4';
+        newDiv.className = 'control pb-4 is-flex is-align-items-center';
         const newInput = document.createElement('input');
         newInput.className = 'input';
         newInput.type = 'email';
-        newInput.placeholder = 'usuario2@ejemplo.com';
+        newInput.placeholder = 'usuario@ejemplo.com';
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'button is-small ml-2';
+        deleteButton.textContent = '➖';
+        deleteButton.type = 'button';
+        deleteButton.addEventListener('click', () => newDiv.remove());
         newDiv.appendChild(newInput);
+        newDiv.appendChild(deleteButton);
         addEmailButton.parentNode.insertBefore(newDiv, addEmailButton);
     }
 </script>
