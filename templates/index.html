@@ -4,29 +4,28 @@
 
 {% block content %}
 <h1>Code Sender</h1>
-<p style="text-align: center; color: #666; margin-bottom: 30px;">
+<p>
     Envía códigos únicos y anónimos a una lista de correos electrónicos
 </p>
 
-{% if error %}
-<div class="error">{{ error }}</div>
-{% endif %}
-
 <form method="POST">
-    <div class="form-group">
-        <label for="api_key">API Key de SendGrid:</label>
-        <input type="password" id="api_key" name="api_key" required 
-               placeholder="Ingresa tu API Key de SendGrid">
-        <small style="color: #666;">Tu API Key se usa solo para este envío y no se almacena.</small>
+    <div class="field">
+        <label class="label">API Key de SendGrid</label>
+        <div class="control">
+            <input class="input" type="password" placeholder="Ingresa tu API Key de SendGrid">
+            <small style="color: #666;">Tu API Key se usa solo para este envío y no se almacena.</small>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Lista de Correos Electrónicos:</label>
+        <div class="control pb-4">
+            <input class="input" type="input" placeholder="usuario1@ejemplo.com">
+        </div>
+
+        <button class="button is-dark is-fullwidth">➕ Agregar otro correo</button>
     </div>
     
-    <div class="form-group">
-        <label for="email_list">Lista de Correos Electrónicos:</label>
-        <textarea id="email_list" name="email_list" required 
-                  placeholder="Ingresa un email por línea:&#10;usuario1@ejemplo.com&#10;usuario2@ejemplo.com&#10;usuario3@ejemplo.com"></textarea>
-        <small style="color: #666;">Un email por línea. Se generará un código único para cada uno.</small>
-    </div>
-    
-    <button type="submit">Enviar Códigos</button>
+    <button class="button is-primary is-large is-fullwidth" type="submit">Enviar códigos</button>
 </form>
 {% endblock %}
