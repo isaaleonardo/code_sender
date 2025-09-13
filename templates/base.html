@@ -7,18 +7,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <style>
         :root {
-            font-size: 10px;
+            font-size: 20px;
         }
 
         body {
-            padding-inline: 3rem;
+            padding-inline: 1.5rem;
             padding-block: 1rem;
+            max-width: 800px;
+            margin-inline: auto;
         }
     </style>
 </head>
 <body>
     <div class="content">
-        <nav class="navbar" role="navigation" aria-label="main navigation">
+        <!-- <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-end">
                 <div class="navbar-menu is-active">
                     <a class="navbar-item is-tab" href="{{ url_for('index') }}">
@@ -29,7 +31,7 @@
                     </a>
                 </div>
             </div>
-        </nav>
+        </nav> -->
         {% block content %}{% endblock %}
     </div>
 </body>
