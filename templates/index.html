@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">API Key de SendGrid</label>
         <div class="control is-flex is-align-items-center">
-            <input class="input" type="password" id="api-key" placeholder="Ingresa tu API Key de SendGrid">
+            <input class="input" type="password" name="api_key" id="api-key" placeholder="Ingresa tu API Key de SendGrid">
             <button class="button is-small ml-2" id="toggle-password" type="button" title="Mostrar/ocultar">🙉</button>
         </div>
         <small style="color: #666; margin-left: 10px;">Tu API Key se usa solo para este envío y no se almacena.</small>
@@ -21,7 +21,7 @@
     <div class="field">
         <label class="label">Lista de Correos Electrónicos:</label>
         <div class="control pb-4">
-            <input class="input" type="input" placeholder="usuario@ejemplo.com">
+            <input class="input email-field" type="input" placeholder="usuario@ejemplo.com">
         </div>
 
         <button class="button is-dark is-fullwidth" id="add-email">➕ Agregar otro correo</button>
@@ -34,6 +34,7 @@
     const addEmailButton = document.getElementById('add-email');
     const togglePasswordButton = document.getElementById('toggle-password');
     const apiKeyInput = document.getElementById('api-key');
+    const emailFields = document.getElementsByClassName('email-field');
 
     addEmailButton.addEventListener('click', e => {
         e.preventDefault();
@@ -54,7 +55,7 @@
         const newDiv = document.createElement('div');
         newDiv.className = 'control pb-4 is-flex is-align-items-center';
         const newInput = document.createElement('input');
-        newInput.className = 'input';
+        newInput.className = 'input email-field';
         newInput.type = 'email';
         newInput.placeholder = 'usuario@ejemplo.com';
         const deleteButton = document.createElement('button');
@@ -66,6 +67,16 @@
         newDiv.appendChild(newInput);
         newDiv.appendChild(deleteButton);
         addEmailButton.parentNode.insertBefore(newDiv, addEmailButton);
+    }
+
+    function gatherEmails() {
+        const emails = [];
+        for (let field of emailFields) {
+            if (field.value.trim()) {
+                emails.push(field.value.trim());
+            }
+        }
+        return emails;
     }
 </script>
 {% endblock %}
