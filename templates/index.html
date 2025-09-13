@@ -13,7 +13,7 @@
         <label class="label">API Key de SendGrid</label>
         <div class="control is-flex is-align-items-center">
             <input class="input" type="password" id="api-key" placeholder="Ingresa tu API Key de SendGrid">
-            <button class="button is-small ml-2" id="toggle-password" type="button">🙉</button>
+            <button class="button is-small ml-2" id="toggle-password" type="button" title="Mostrar/ocultar">🙉</button>
         </div>
         <small style="color: #666; margin-left: 10px;">Tu API Key se usa solo para este envío y no se almacena.</small>
     </div>
@@ -61,6 +61,7 @@
         deleteButton.className = 'button is-small ml-2';
         deleteButton.textContent = '➖';
         deleteButton.type = 'button';
+        deleteButton.title = 'Remover este correo';
         deleteButton.addEventListener('click', () => newDiv.remove());
         newDiv.appendChild(newInput);
         newDiv.appendChild(deleteButton);
