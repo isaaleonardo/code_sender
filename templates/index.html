@@ -23,9 +23,29 @@
             <input class="input" type="input" placeholder="usuario1@ejemplo.com">
         </div>
 
-        <button class="button is-dark is-fullwidth">➕ Agregar otro correo</button>
+        <button class="button is-dark is-fullwidth" id="add-email">➕ Agregar otro correo</button>
     </div>
     
     <button class="button is-primary is-large is-fullwidth" type="submit">Enviar códigos</button>
 </form>
+
+<script>
+    const addEmailButton = document.getElementById('add-email');
+    
+    addEmailButton.addEventListener('click', e => {
+        e.preventDefault();
+        addEmailField();
+    });
+    
+    function addEmailField() {
+        const newDiv = document.createElement('div');
+        newDiv.className = 'control pb-4';
+        const newInput = document.createElement('input');
+        newInput.className = 'input';
+        newInput.type = 'email';
+        newInput.placeholder = 'usuario2@ejemplo.com';
+        newDiv.appendChild(newInput);
+        addEmailButton.parentNode.insertBefore(newDiv, addEmailButton);
+    }
+</script>
 {% endblock %}
