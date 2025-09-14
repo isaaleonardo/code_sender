@@ -3,6 +3,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import secrets
 import string
+import random
 
 app = Flask(__name__)
 
@@ -42,6 +43,7 @@ def send_emails(api_key, sender_email, emails, codes):
     except Exception as e:
       errors.append(f"Excepción al enviar a {email}: {e}")
 
+  random.shuffle(successes)
   return {'successes': successes, 'errors': errors}
 
 @app.route("/", methods=["GET", "POST"])
