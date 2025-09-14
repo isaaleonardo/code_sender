@@ -10,6 +10,14 @@
 
 <form method="POST">
     <div class="field">
+        <label class="label">Correo Electrónico</label>
+        <div class="control">
+            <input class="input" type="input" name="sender_email" placeholder="usuario@ejemplo.com">
+        </div>
+        <small style="color: #666; margin-left: 10px;">El correo registrado en SendGrid.</small>
+    </div>
+
+    <div class="field">
         <label class="label">API Key de SendGrid</label>
         <div class="control is-flex is-align-items-center">
             <input class="input" type="password" name="api_key" id="api-key" placeholder="Ingresa tu API Key de SendGrid">
