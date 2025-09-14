@@ -5,10 +5,39 @@
 {% block content %}
 <h1>Resultado del Envío</h1>
 
-<div class="success">
-    <strong>¡Proceso completado!</strong><br>
+{% if sent_count > 0 %}
+<p class="has-text-weight-semibold">
+    ¡Proceso completado!
+</p>
+<p>
     Se enviaron {{ sent_count }} códigos de {{ total_emails }} emails totales.
+</p>
+
+<ul style="list-style: none; margin: 0;">
+    {% for code in codes %}
+    <li>
+        <button
+            class="button is-fullwidth is-justify-content-space-between"
+            onclick="navigator.clipboard.writeText('{{ code }}')"
+        >
+            <div class="code-sent p">
+                <p class="mb-0">{{ code }}</p>
+            </div>
+            <p class="mb-0">📋️</p>
+        </button>
+    </li>
+    {% endfor %}
+</ul>
+
+<div class="is-flex is-justify-content-center">
+    <button
+        class="button mt-3 right"
+        onclick="copyAllCodes('{% for code in codes %}{{ code }} {% endfor %}')"
+    >
+        Copiar Todos los Códigos
+    </button>
 </div>
+{% endif %}
 
 {% if errors %}
 <div class="error">
@@ -35,4 +64,10 @@
         Enviar Más Códigos
     </a>
 </div>
+
+<script>
+    function copyAllCodes(codes) {
+        navigator.clipboard.writeText(codes.split(' ').join('\n'));
+    }
+</script>
 {% endblock %}
