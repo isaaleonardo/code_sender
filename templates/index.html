@@ -21,7 +21,7 @@
     <div class="field">
         <label class="label">Lista de Correos Electrónicos:</label>
         <div class="control pb-4">
-            <input class="input email-field" type="input" placeholder="usuario@ejemplo.com">
+            <input class="input email-field" type="email" placeholder="usuario@ejemplo.com">
         </div>
 
         <button class="button is-dark is-fullwidth" id="add-email">➕ Agregar otro correo</button>
@@ -35,6 +35,8 @@
     const togglePasswordButton = document.getElementById('toggle-password');
     const apiKeyInput = document.getElementById('api-key');
     const emailFields = document.getElementsByClassName('email-field');
+    const submitButton = document.querySelector('[type="submit"]');
+    const form = document.querySelector('form');
 
     addEmailButton.addEventListener('click', e => {
         e.preventDefault();
@@ -49,6 +51,17 @@
             apiKeyInput.type = 'password';
             togglePasswordButton.textContent = '🙉';
         }
+    });
+
+    submitButton.addEventListener('click', e => {
+        e.preventDefault();
+        const emails = gatherEmails();
+        const newInput = document.createElement('input');
+        newInput.name = "email_list";
+        newInput.value = emails.join(',');
+        form.appendChild(newInput);
+
+        document.querySelector('form').submit();
     });
 
     function addEmailField() {
