@@ -47,8 +47,12 @@ def send_emails(api_key, sender_email, emails, codes):
 @app.route("/", methods=["GET", "POST"])
 def index():
   if request.method == "POST":
+    sender_email = request.form.get("sender_email")
     api_key = request.form.get("api_key")
     email_list = request.form.get("email_list")
+
+    if not sender_email:
+      return render_template("index.html", error="El correo del remitente es requerido")
     
     if not api_key:
       return render_template("index.html", error="La API Key es requerida")
@@ -60,19 +64,21 @@ def index():
     
     if not emails:
       return render_template("index.html", error="No se encontraron emails válidos")
-    
-    return redirect(url_for("send", 
-                            api_key=api_key, 
+
+    return redirect(url_for("send",
+                            sender_email=sender_email,
+                            api_key=api_key,
                             emails=','.join(emails)))
   
   return render_template("index.html")
 
 @app.route("/enviar")
 def send():
+  sender_email = request.args.get("sender_email")
   api_key = request.args.get("api_key")
   emails_str = request.args.get("emails")
   
-  if not api_key or not emails_str:
+  if not sender_email or not api_key or not emails_str:
     return redirect(url_for("index"))
   
   emails = emails_str.split(',')
