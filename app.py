@@ -96,6 +96,7 @@ def send():
 
   return render_template("result.html",
                         sent_count=sent_count,
+                        codes=successes,
                         total_emails=len(emails),
                         errors=errors)
 
