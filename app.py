@@ -28,11 +28,16 @@ def send_emails(api_key, sender_email, emails, codes):
   successes = []
 
   for email, code in zip(emails, codes):
+    with open('email_template/index.html', 'r', encoding='utf-8') as file:
+      html_template = file.read()
+
+    html_customed = html_template.format(code=code)
+
     message = Mail(
       from_email=sender_email,
       to_emails=email,
       subject='Tu código de participación único',
-      html_content=f'Hola,<br><br>Tu código único para el formulario es: <strong>{code}</strong>'
+      html_content=html_customed
     )
     try:
       response = sg.send(message)
