@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 import secrets
 import string
 
@@ -17,6 +19,30 @@ def clean_email_list(email_text):
   # Filtrar líneas vacías
   emails = [email for email in emails if email]
   return emails
+
+def send_emails(api_key, sender_email, emails, codes):
+  sg = SendGridAPIClient(api_key)
+
+  errors = []
+  successes = []
+
+  for email, code in zip(emails, codes):
+    message = Mail(
+      from_email=sender_email,
+      to_emails=email,
+      subject='Tu código de participación único',
+      html_content=f'Hola,<br><br>Tu código único para el formulario es: <strong>{code}</strong>'
+    )
+    try:
+      response = sg.send(message)
+      if response.status_code >= 200 and response.status_code < 300:
+        successes.append(code)
+      else:
+        errors.append(f"Error al enviar a {email}: {response.body}")
+    except Exception as e:
+      errors.append(f"Excepción al enviar a {email}: {e}")
+
+  return {'successes': successes, 'errors': errors}
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -49,25 +75,18 @@ def send():
   if not api_key or not emails_str:
     return redirect(url_for("index"))
   
-  # Convertir string de emails de vuelta a lista
   emails = emails_str.split(',')
   
   codes = [generate_secure_code() for _ in emails]
-  
-  # Simular envío de emails (aquí es donde iría la integración con SendGrid)
-  sent_count = 0
-  errors = []
-  
-  for email, code in zip(emails, codes):
-      try:
-          # SIMULACIÓN: En la vida real aquí iría el código de SendGrid
-          print(f"Enviando código '{code}' a {email}")
-          # simulate_send_email(email, code, api_key)
-          sent_count += 1
-      except Exception as e:
-          errors.append(f"Error enviando a {email}: {str(e)}")
-  
-  return render_template("result.html", 
+
+  result = send_emails(api_key, sender_email, emails, codes)
+  successes = result['successes']
+  errors = result['errors']
+  sent_count = len(successes)
+
+  print(result)
+
+  return render_template("result.html",
                         sent_count=sent_count,
                         total_emails=len(emails),
                         errors=errors)
