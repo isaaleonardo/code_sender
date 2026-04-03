@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+import requests
 import secrets
 import string
 import random
@@ -25,10 +24,14 @@ def clean_email_list(email_text):
     emails = [x for x in emails if x and not (x in seen or seen.add(x))]
     return emails
 
-def send_emails(api_key, sender_email, emails, codes):
+def send_emails(api_key, domain, sender_email, emails, codes):
     api_key = api_key.strip()
+    domain = domain.strip()
     sender_email = sender_email.strip()
-    sg = SendGridAPIClient(api_key)
+    
+    # Mailgun API URL
+    url = f"https://api.mailgun.net/v3/{domain}/messages"
+    auth = ("api", api_key)
 
     errors = []
     successes = []
@@ -43,24 +46,21 @@ def send_emails(api_key, sender_email, emails, codes):
     for email, code in zip(emails, codes):
         html_customed = html_template.format(code=code)
 
-        message = Mail(
-            from_email=sender_email,
-            to_emails=email,
-            subject='Tu código de participación único',
-            html_content=html_customed
-        )
+        data = {
+            "from": sender_email,
+            "to": email,
+            "subject": "Tu código de participación único",
+            "html": html_customed
+        }
+        
         try:
-            response = sg.send(message)
-            if response.status_code >= 200 and response.status_code < 300:
+            response = requests.post(url, auth=auth, data=data)
+            if response.status_code == 200:
                 successes.append(code)
             else:
-                errors.append(f"Error al enviar a {email}: Status {response.status_code}")
+                errors.append(f"Error al enviar a {email}: Status {response.status_code} - {response.text}")
         except Exception as e:
-            # Intentar obtener más detalles del error si es posible
-            error_msg = str(e)
-            if hasattr(e, 'body'):
-                error_msg = f"{e.body}"
-            errors.append(f"Error al enviar a {email}: {error_msg}")
+            errors.append(f"Error al enviar a {email}: {e}")
 
     random.shuffle(successes)
     return {'successes': successes, 'errors': errors}
@@ -68,9 +68,10 @@ def send_emails(api_key, sender_email, emails, codes):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        print("DEBUG: Processing POST request in / route (V2)")
+        print("DEBUG: Processing POST request in / route (Mailgun V3)")
         sender_email = request.form.get("sender_email")
         api_key = request.form.get("api_key")
+        domain = request.form.get("domain")
         email_list = request.form.get("email_list")
 
         if not sender_email:
@@ -78,6 +79,9 @@ def index():
         
         if not api_key:
             return render_template("index.html", error="La API Key es requerida")
+        
+        if not domain:
+            return render_template("index.html", error="El dominio de Mailgun es requerido")
         
         if not email_list:
             return render_template("index.html", error="La lista de emails es requerida")
@@ -88,7 +92,7 @@ def index():
             return render_template("index.html", error="No se encontraron emails válidos")
 
         codes = [generate_secure_code() for _ in emails]
-        result = send_emails(api_key, sender_email, emails, codes)
+        result = send_emails(api_key, domain, sender_email, emails, codes)
         
         successes = result['successes']
         errors = result['errors']

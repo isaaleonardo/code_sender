@@ -18,18 +18,26 @@
     <div class="field">
         <label class="label">Correo Electrónico (Remitente)</label>
         <div class="control">
-            <input class="input" type="email" name="sender_email" placeholder="usuario@ejemplo.com" required>
+            <input class="input" type="email" name="sender_email" placeholder="Excited User <mailgun@YOUR_DOMAIN_NAME>" required>
         </div>
-        <small style="color: #666; margin-left: 10px;">Debe ser un remitente verificado en tu cuenta de SendGrid (Single Sender Verification).</small>
+        <small style="color: #666; margin-left: 10px;">El remitente autorizado en Mailgun.</small>
     </div>
 
     <div class="field">
-        <label class="label">API Key de SendGrid</label>
+        <label class="label">Dominio de Mailgun</label>
+        <div class="control">
+            <input class="input" type="text" name="domain" placeholder="mg.tudominio.com" required>
+        </div>
+        <small style="color: #666; margin-left: 10px;">El dominio configurado en tu cuenta de Mailgun.</small>
+    </div>
+
+    <div class="field">
+        <label class="label">API Key de Mailgun (Private API Key)</label>
         <div class="control is-flex is-align-items-center">
-            <input class="input" type="password" name="api_key" id="api-key" placeholder="SG.xxxxxxxx.yyyyyyyy" required>
+            <input class="input" type="password" name="api_key" id="api-key" placeholder="api-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required>
             <button class="button is-small ml-2" id="toggle-password" type="button" title="Mostrar/ocultar">🙉</button>
         </div>
-        <small style="color: #666; margin-left: 10px;">Usa tu API Key completa (empieza por "SG."). Solo se usa para este envío.</small>
+        <small style="color: #666; margin-left: 10px;">Usa tu Private API Key de Mailgun.</small>
     </div>
 
     <div class="field">
