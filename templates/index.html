@@ -8,22 +8,28 @@
     Envía códigos únicos y anónimos a una lista de correos electrónicos
 </p>
 
+{% if error %}
+<div class="notification is-danger">
+    {{ error }}
+</div>
+{% endif %}
+
 <form method="POST">
     <div class="field">
-        <label class="label">Correo Electrónico</label>
+        <label class="label">Correo Electrónico (Remitente)</label>
         <div class="control">
-            <input class="input" type="input" name="sender_email" placeholder="usuario@ejemplo.com">
+            <input class="input" type="email" name="sender_email" placeholder="usuario@ejemplo.com" required>
         </div>
-        <small style="color: #666; margin-left: 10px;">El correo registrado en SendGrid.</small>
+        <small style="color: #666; margin-left: 10px;">Debe ser un remitente verificado en tu cuenta de SendGrid (Single Sender Verification).</small>
     </div>
 
     <div class="field">
         <label class="label">API Key de SendGrid</label>
         <div class="control is-flex is-align-items-center">
-            <input class="input" type="password" name="api_key" id="api-key" placeholder="Ingresa tu API Key de SendGrid">
+            <input class="input" type="password" name="api_key" id="api-key" placeholder="SG.xxxxxxxx.yyyyyyyy" required>
             <button class="button is-small ml-2" id="toggle-password" type="button" title="Mostrar/ocultar">🙉</button>
         </div>
-        <small style="color: #666; margin-left: 10px;">Tu API Key se usa solo para este envío y no se almacena.</small>
+        <small style="color: #666; margin-left: 10px;">Usa tu API Key completa (empieza por "SG."). Solo se usa para este envío.</small>
     </div>
 
     <div class="field">
