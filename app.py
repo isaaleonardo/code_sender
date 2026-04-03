@@ -68,6 +68,7 @@ def send_emails(api_key, sender_email, emails, codes):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
+        print("DEBUG: Processing POST request in / route (V2)")
         sender_email = request.form.get("sender_email")
         api_key = request.form.get("api_key")
         email_list = request.form.get("email_list")
